@@ -230,7 +230,7 @@
         const status = text(request.status, "configured");
         const priority = (request.courts || []).join(", ");
         const available = (request.available || []).join(" | ");
-        const title = text(request.label, `${text(request.startTime)} - courts ${priority}`);
+        const title = text(request.id, `${text(request.startTime)} - courts ${priority}`);
         const selectedCourt = text(request.selectedCourt);
         let selectionLine = "";
         if (selectedCourt && status === "not_open_yet") {
