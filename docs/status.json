@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T18:05:05+03:00",
+  "updatedAt": "2026-05-31T18:51:27+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -11,6 +11,7 @@
         "startTime": "22:00",
         "endTime": "23:00",
         "description": "מגרשים 1+2+4",
+        "court": "מגרש 1",
         "location": "מגרשים 1+2+4"
       }
     ]
@@ -23,9 +24,9 @@
       "targetDescription": "recurring",
       "startTime": "22:00",
       "courts": [
-        "3",
+        "2",
         "1",
-        "2"
+        "3"
       ]
     }
   ],
@@ -37,9 +38,9 @@
       "targetDescription": "recurring",
       "startTime": "22:00",
       "courts": [
-        "3",
+        "2",
         "1",
-        "2"
+        "3"
       ],
       "available": [
         "מגרש 4@classId:396",
@@ -49,31 +50,31 @@
       ],
       "status": "available",
       "actionText": "הרשמה",
-      "selectedCourt": "מגרש 1",
+      "selectedCourt": "מגרש 2",
       "slot": "22:00-23:00"
     }
   ],
   "workflowRuns": {
     "booking": [
       {
-        "workflowName": "Sportan booking",
-        "databaseId": 26716134596,
-        "conclusion": "success",
         "headBranch": "main",
-        "updatedAt": "2026-05-31T15:04:55Z",
-        "event": "schedule",
-        "number": 1,
-        "createdAt": "2026-05-31T15:04:40Z",
+        "databaseId": 26716134596,
         "url": "https://github.com/sagi519/sportan-booker/actions/runs/26716134596",
-        "status": "completed"
+        "number": 1,
+        "workflowName": "Sportan booking",
+        "status": "completed",
+        "createdAt": "2026-05-31T15:04:40Z",
+        "conclusion": "success",
+        "event": "schedule",
+        "updatedAt": "2026-05-31T15:04:55Z"
       }
     ]
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26716139752",
+    "runId": "26717204507",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26716139752"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26717204507"
   }
 }

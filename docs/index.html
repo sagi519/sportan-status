@@ -158,7 +158,8 @@
       available: "Available",
       not_open_yet: "Not open yet",
       unavailable: "Unavailable",
-      configured: "Configured"
+      configured: "Configured",
+      already_booked: "Already booked"
     };
 
     function text(value, fallback = "") {
@@ -210,8 +211,9 @@
       root.innerHTML = `<ul>${upcoming.items.map(item => `
         <li>
           <strong>${escapeHtml(item.date)} ${escapeHtml(item.startTime)}-${escapeHtml(item.endTime)}</strong>
-          ${text(item.location) ? ` - ${escapeHtml(item.location)}` : ""}
-          ${text(item.description) ? `<div class="muted">${escapeHtml(item.description)}</div>` : ""}
+          ${text(item.court) ? ` - ${escapeHtml(item.court)}` : ""}
+          ${text(item.location) ? `<div class="muted">${escapeHtml(item.location)}</div>` : ""}
+          ${text(item.description) && text(item.description) !== text(item.location) ? `<div class="muted">${escapeHtml(item.description)}</div>` : ""}
         </li>
       `).join("")}</ul>`;
     }
@@ -232,18 +234,12 @@
       root.innerHTML = requests.map(request => {
         const status = text(request.status, "configured");
         const priority = (request.courts || []).join(", ");
-        const available = (request.available || []).join(" | ");
         const title = text(request.id, `${text(request.startTime)} - courts ${priority}`);
         const selectedCourt = text(request.selectedCourt);
         let selectionLine = "";
         if (selectedCourt && status === "not_open_yet") {
           selectionLine = `<p>Will try when booking opens: <strong>${escapeHtml(selectedCourt)}</strong></p>`;
-        } else if (selectedCourt) {
-          selectionLine = `<p>Bookable now: <strong>${escapeHtml(selectedCourt)}</strong> (${escapeHtml(request.actionText)})</p>`;
         }
-        const availabilityLine = available && status !== "not_open_yet"
-          ? `<p class="muted">Other currently available courts: ${escapeHtml(available)}</p>`
-          : "";
         return `
           <div class="card">
             <div class="row">
@@ -258,7 +254,6 @@
               · courts ${escapeHtml(priority)}
             </p>
             ${selectionLine}
-            ${availabilityLine}
           </div>
         `;
       }).join("");
