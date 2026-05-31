@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T16:09:48+03:00",
+  "updatedAt": "2026-05-31T16:40:17+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -13,9 +13,11 @@
       "kind": "recurring",
       "targetDate": "2026-06-01",
       "targetDescription": "recurring",
-      "startTime": "20:00",
+      "startTime": "22:00",
       "courts": [
-        "4"
+        "3",
+        "1",
+        "2"
       ]
     }
   ],
@@ -25,19 +27,22 @@
       "kind": "recurring",
       "targetDate": "2026-06-01",
       "targetDescription": "recurring",
-      "startTime": "20:00",
+      "startTime": "22:00",
       "courts": [
-        "4"
+        "3",
+        "1",
+        "2"
       ],
       "available": [
-        "מגרש 1@classId:433",
-        "מגרש 2@classId:433",
-        "מגרש 4@classId:433"
+        "מגרש 4@classId:396",
+        "מגרש 1@classId:435",
+        "מגרש 2@classId:435",
+        "מגרש 4@classId:435"
       ],
       "status": "not_open_yet",
       "actionText": "עדיין לא נפתח",
-      "selectedCourt": "מגרש 4",
-      "slot": "20:00-21:00"
+      "selectedCourt": "מגרש 1",
+      "slot": "22:00-23:00"
     }
   ],
   "workflowRuns": {
@@ -45,9 +50,9 @@
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26713515910",
+    "runId": "26714192751",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26713515910"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26714192751"
   }
 }
