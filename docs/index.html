@@ -126,7 +126,6 @@
       <div class="actions">
         <a class="button" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Run status refresh</a>
         <a class="button secondary" href="https://github.com/sagi519/sportan-booker/edit/main/booking-config.json">Edit future requests</a>
-        <a id="last-refresh-run" class="button secondary" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Latest refresh run</a>
       </div>
     </section>
 
@@ -269,10 +268,6 @@
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.requests || []);
       renderHistory(status.workflowRuns || { booking: [] });
-      const lastRefreshRun = document.getElementById("last-refresh-run");
-      if (status.run && status.run.url) {
-        lastRefreshRun.href = status.run.url;
-      }
     }
 
     loadStatus().catch(error => {

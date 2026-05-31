@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T15:40:42+03:00",
+  "updatedAt": "2026-05-31T15:45:32+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -43,9 +43,9 @@
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26712874618",
+    "runId": "26712981773",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712874618"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712981773"
   }
 }
