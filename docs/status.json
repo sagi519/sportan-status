@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T15:14:37+03:00",
+  "updatedAt": "2026-05-31T15:18:29+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -39,75 +39,13 @@
     }
   ],
   "workflowRuns": {
-    "booking": [],
-    "statusRefresh": [
-      {
-        "number": 5,
-        "event": "workflow_dispatch",
-        "status": "in_progress",
-        "createdAt": "2026-05-31T12:14:29Z",
-        "headBranch": "main",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712319098",
-        "conclusion": "",
-        "workflowName": "Sportan status",
-        "databaseId": 26712319098,
-        "updatedAt": "2026-05-31T12:14:34Z"
-      },
-      {
-        "number": 4,
-        "event": "workflow_dispatch",
-        "status": "completed",
-        "createdAt": "2026-05-31T12:08:11Z",
-        "headBranch": "main",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712187419",
-        "conclusion": "success",
-        "workflowName": "Sportan status",
-        "databaseId": 26712187419,
-        "updatedAt": "2026-05-31T12:08:34Z"
-      },
-      {
-        "number": 3,
-        "event": "workflow_dispatch",
-        "status": "completed",
-        "createdAt": "2026-05-31T11:42:43Z",
-        "headBranch": "main",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26711647904",
-        "conclusion": "success",
-        "workflowName": "Sportan status",
-        "databaseId": 26711647904,
-        "updatedAt": "2026-05-31T11:42:56Z"
-      },
-      {
-        "number": 2,
-        "event": "workflow_dispatch",
-        "status": "completed",
-        "createdAt": "2026-05-31T11:39:55Z",
-        "headBranch": "main",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26711586310",
-        "conclusion": "failure",
-        "workflowName": "Sportan status",
-        "databaseId": 26711586310,
-        "updatedAt": "2026-05-31T11:40:11Z"
-      },
-      {
-        "number": 1,
-        "event": "workflow_dispatch",
-        "status": "completed",
-        "createdAt": "2026-05-31T11:25:18Z",
-        "headBranch": "main",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26711279919",
-        "conclusion": "success",
-        "workflowName": "Sportan status",
-        "databaseId": 26711279919,
-        "updatedAt": "2026-05-31T11:25:39Z"
-      }
-    ]
+    "booking": []
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26712319098",
+    "runId": "26712398918",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712319098"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26712398918"
   }
 }

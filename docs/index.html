@@ -176,6 +176,16 @@
         const priority = (request.courts || []).join(", ");
         const available = (request.available || []).join(" | ");
         const title = text(request.label, `${text(request.startTime)} - courts ${priority}`);
+        const selectedCourt = text(request.selectedCourt);
+        let selectionLine = "";
+        if (selectedCourt && status === "not_open_yet") {
+          selectionLine = `<p>Will try when booking opens: <strong>${escapeHtml(selectedCourt)}</strong></p>`;
+        } else if (selectedCourt) {
+          selectionLine = `<p>Bookable now: <strong>${escapeHtml(selectedCourt)}</strong> (${escapeHtml(request.actionText)})</p>`;
+        }
+        const availabilityLine = available && status !== "not_open_yet"
+          ? `<p class="muted">Other currently available courts: ${escapeHtml(available)}</p>`
+          : "";
         return `
           <div class="card">
             <div class="row">
@@ -188,8 +198,8 @@
               · ${escapeHtml(request.startTime)}
               · courts ${escapeHtml(priority)}
             </p>
-            ${request.selectedCourt ? `<p>Best match: <strong>${escapeHtml(request.selectedCourt)}</strong> (${escapeHtml(request.actionText)})</p>` : ""}
-            ${available ? `<p class="muted">Available now: ${escapeHtml(available)}</p>` : ""}
+            ${selectionLine}
+            ${availabilityLine}
           </div>
         `;
       }).join("");
@@ -224,10 +234,7 @@
 
     function renderHistory(workflowRuns) {
       const root = document.getElementById("history");
-      root.innerHTML = [
-        renderRunList("Booking runs", workflowRuns.booking || []),
-        renderRunList("Status refresh runs", workflowRuns.statusRefresh || [])
-      ].join("");
+      root.innerHTML = renderRunList("Booking runs", workflowRuns.booking || []);
     }
 
     async function loadStatus() {
@@ -240,7 +247,7 @@
         `Last updated: ${text(status.updatedAt)} (${text(status.timezone)})`;
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.requests || []);
-      renderHistory(status.workflowRuns || { booking: [], statusRefresh: [] });
+      renderHistory(status.workflowRuns || { booking: [] });
     }
 
     loadStatus().catch(error => {
