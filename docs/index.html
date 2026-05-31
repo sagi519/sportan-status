@@ -81,6 +81,15 @@
       padding: 10px 14px;
       text-decoration: none;
     }
+    .button.secondary {
+      background: #6e7781;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
     ul {
       padding-left: 20px;
     }
@@ -106,8 +115,20 @@
         <h1>Sportan booking status</h1>
         <div id="updated" class="muted">Loading status...</div>
       </div>
-      <a class="button" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml">Refresh in GitHub</a>
     </div>
+
+    <section class="card">
+      <h2>Actions</h2>
+      <p class="muted">
+        These links require access to the private automation repo. GitHub still requires clicking
+        <strong>Run workflow</strong> on the refresh page.
+      </p>
+      <div class="actions">
+        <a class="button" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Run status refresh</a>
+        <a class="button secondary" href="https://github.com/sagi519/sportan-booker/edit/main/booking-config.json">Edit future requests</a>
+        <a id="last-refresh-run" class="button secondary" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Latest refresh run</a>
+      </div>
+    </section>
 
     <section class="card">
       <h2>Already booked slots</h2>
@@ -248,6 +269,10 @@
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.requests || []);
       renderHistory(status.workflowRuns || { booking: [] });
+      const lastRefreshRun = document.getElementById("last-refresh-run");
+      if (status.run && status.run.url) {
+        lastRefreshRun.href = status.run.url;
+      }
     }
 
     loadStatus().catch(error => {
