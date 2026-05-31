@@ -1,20 +1,11 @@
 {
-  "updatedAt": "2026-05-31T19:40:17+03:00",
+  "updatedAt": "2026-05-31T19:49:34+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
-    "total": 1,
-    "message": null,
-    "items": [
-      {
-        "date": "2026-05-31",
-        "startTime": "22:00",
-        "endTime": "23:00",
-        "description": "מגרשים 1+2+4",
-        "court": "מגרש 1",
-        "location": "מגרשים 1+2+4"
-      }
-    ]
+    "total": 0,
+    "message": "לא קיימים שיעורים מוזמנים",
+    "items": []
   },
   "configuredRequests": [
     {
@@ -56,9 +47,9 @@
   ],
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26718348656",
+    "runId": "26718567017",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26718348656"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26718567017"
   }
 }
