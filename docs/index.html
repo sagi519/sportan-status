@@ -84,11 +84,20 @@
     .button.secondary {
       background: #6e7781;
     }
-    .actions {
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .section-heading {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-heading h2 {
+      margin: 0;
     }
     ul {
       padding-left: 20px;
@@ -111,23 +120,12 @@
 <body>
   <main>
     <div class="row">
-      <div>
+      <div class="header-meta">
         <h1>Sportan booking status</h1>
         <div id="updated" class="muted">Loading status...</div>
       </div>
+      <a class="button" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Refresh status</a>
     </div>
-
-    <section class="card">
-      <h2>Actions</h2>
-      <p class="muted">
-        These links require access to the private automation repo. GitHub still requires clicking
-        <strong>Run workflow</strong> on the refresh page.
-      </p>
-      <div class="actions">
-        <a class="button" href="https://github.com/sagi519/sportan-booker/actions/workflows/sportan-status.yml?query=branch%3Amain">Run status refresh</a>
-        <a class="button secondary" href="https://github.com/sagi519/sportan-booker/edit/main/booking-config.json">Edit future requests</a>
-      </div>
-    </section>
 
     <section class="card">
       <h2>Already booked slots</h2>
@@ -135,7 +133,10 @@
     </section>
 
     <section class="card">
-      <h2>Future requests</h2>
+      <div class="section-heading">
+        <h2>Future requests</h2>
+        <a class="button secondary" href="https://github.com/sagi519/sportan-booker/edit/main/booking-config.json">Edit requests</a>
+      </div>
       <div id="requests">Loading...</div>
     </section>
 
@@ -154,6 +155,28 @@
 
     function text(value, fallback = "") {
       return value === null || value === undefined || value === "" ? fallback : String(value);
+    }
+
+    function formatTimestamp(value, timezone) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) {
+        return text(value, "Unknown");
+      }
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: timezone || undefined,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).formatToParts(date).reduce((acc, part) => {
+        acc[part.type] = part.value;
+        return acc;
+      }, {});
+      const zone = timezone ? ` (${timezone})` : "";
+      return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}:${parts.second}${zone}`;
     }
 
     function escapeHtml(value) {
@@ -245,7 +268,7 @@
               ${badge(runState(run))}
             </div>
             <div class="muted">
-              ${escapeHtml(run.event)} · created ${escapeHtml(run.createdAt)} · updated ${escapeHtml(run.updatedAt)}
+              ${escapeHtml(run.event)} · created ${escapeHtml(formatTimestamp(run.createdAt))} · updated ${escapeHtml(formatTimestamp(run.updatedAt))}
             </div>
           </li>
         `).join("")}</ul>
@@ -264,7 +287,7 @@
       }
       const status = await response.json();
       document.getElementById("updated").textContent =
-        `Last updated: ${text(status.updatedAt)} (${text(status.timezone)})`;
+        `Last updated: ${formatTimestamp(status.updatedAt, status.timezone)}`;
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.requests || []);
       renderHistory(status.workflowRuns || { booking: [] });
