@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T15:50:43+03:00",
+  "updatedAt": "2026-05-31T15:56:58+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -9,9 +9,11 @@
   },
   "configuredRequests": [
     {
-      "label": "Tomorrow 20:00",
+      "id": "daily-20",
+      "label": "Daily 20:00",
       "kind": "recurring",
       "targetDate": "2026-06-01",
+      "targetDescription": "recurring, 1 day(s) ahead",
       "startTime": "20:00",
       "courts": [
         "4"
@@ -20,9 +22,11 @@
   ],
   "requests": [
     {
-      "label": "Tomorrow 20:00",
+      "id": "daily-20",
+      "label": "Daily 20:00",
       "kind": "recurring",
       "targetDate": "2026-06-01",
+      "targetDescription": "recurring, 1 day(s) ahead",
       "startTime": "20:00",
       "courts": [
         "4"
@@ -43,9 +47,9 @@
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26713093676",
+    "runId": "26713231991",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26713093676"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26713231991"
   }
 }

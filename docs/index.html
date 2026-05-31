@@ -72,6 +72,10 @@
       background: #ddf4ff;
       color: #0969da;
     }
+    .configured {
+      background: #f6f8fa;
+      color: #57606a;
+    }
     a.button {
       background: #0969da;
       border-radius: 8px;
@@ -150,7 +154,8 @@
     const statusText = {
       available: "Available",
       not_open_yet: "Not open yet",
-      unavailable: "Unavailable"
+      unavailable: "Unavailable",
+      configured: "Configured"
     };
 
     function text(value, fallback = "") {
@@ -208,14 +213,21 @@
       `).join("")}</ul>`;
     }
 
-    function renderRequests(requests) {
+    function requestKey(request) {
+      return request.id || `${request.targetDate}|${request.startTime}|${(request.courts || []).join(",")}`;
+    }
+
+    function renderRequests(configuredRequests, requestStatuses) {
       const root = document.getElementById("requests");
+      const statusByKey = new Map((requestStatuses || []).map(request => [requestKey(request), request]));
+      const requests = (configuredRequests && configuredRequests.length > 0 ? configuredRequests : requestStatuses || [])
+        .map(request => ({ ...request, ...(statusByKey.get(requestKey(request)) || {}) }));
       if (!requests || requests.length === 0) {
         root.innerHTML = `<p class="muted">No future requests configured.</p>`;
         return;
       }
       root.innerHTML = requests.map(request => {
-        const status = text(request.status, "unavailable");
+        const status = text(request.status, "configured");
         const priority = (request.courts || []).join(", ");
         const available = (request.available || []).join(" | ");
         const title = text(request.label, `${text(request.startTime)} - courts ${priority}`);
@@ -237,7 +249,8 @@
             </div>
             <p class="muted">
               ${escapeHtml(text(request.kind, "recurring"))}
-              · target ${escapeHtml(request.targetDate)}
+              · ${escapeHtml(text(request.targetDescription, `target ${text(request.targetDate)}`))}
+              · resolved ${escapeHtml(request.targetDate)}
               · ${escapeHtml(request.startTime)}
               · courts ${escapeHtml(priority)}
             </p>
@@ -289,7 +302,7 @@
       document.getElementById("updated").textContent =
         `Last updated: ${formatTimestamp(status.updatedAt, status.timezone)}`;
       renderUpcoming(status.upcoming || { items: [] });
-      renderRequests(status.requests || []);
+      renderRequests(status.configuredRequests || [], status.requests || []);
       renderHistory(status.workflowRuns || { booking: [] });
     }
 
