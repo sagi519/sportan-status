@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-31T18:53:20+03:00",
+  "updatedAt": "2026-05-31T19:40:17+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
@@ -54,27 +54,11 @@
       "slot": "22:00-23:00"
     }
   ],
-  "workflowRuns": {
-    "booking": [
-      {
-        "updatedAt": "2026-05-31T15:04:55Z",
-        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26716134596",
-        "createdAt": "2026-05-31T15:04:40Z",
-        "event": "schedule",
-        "number": 1,
-        "headBranch": "main",
-        "workflowName": "Sportan booking",
-        "conclusion": "success",
-        "databaseId": 26716134596,
-        "status": "completed"
-      }
-    ]
-  },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26717248536",
+    "runId": "26718348656",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26717248536"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26718348656"
   }
 }

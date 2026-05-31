@@ -51,7 +51,7 @@
       font-weight: 600;
       padding: 4px 10px;
     }
-    .available {
+    .available, .already_booked {
       background: #dafbe1;
       color: #116329;
     }
@@ -212,8 +212,6 @@
         <li>
           <strong>${escapeHtml(item.date)} ${escapeHtml(item.startTime)}-${escapeHtml(item.endTime)}</strong>
           ${text(item.court) ? ` - ${escapeHtml(item.court)}` : ""}
-          ${text(item.location) ? `<div class="muted">${escapeHtml(item.location)}</div>` : ""}
-          ${text(item.description) && text(item.description) !== text(item.location) ? `<div class="muted">${escapeHtml(item.description)}</div>` : ""}
         </li>
       `).join("")}</ul>`;
     }
@@ -273,14 +271,14 @@
           <li>
             <div class="row">
               <span>
-                <strong>#${escapeHtml(run.number)}</strong>
-                ${run.url ? `<a href="${escapeHtml(run.url)}">${escapeHtml(run.workflowName || "workflow run")}</a>` : escapeHtml(run.workflowName || "workflow run")}
+                <strong>${escapeHtml(run.workflowName || "booking run")}</strong>
               </span>
               ${badge(runState(run))}
             </div>
             <div class="muted">
               ${escapeHtml(run.event)} · created ${escapeHtml(formatTimestamp(run.createdAt))} · updated ${escapeHtml(formatTimestamp(run.updatedAt))}
             </div>
+            ${run.details && run.details.length ? `<ul class="muted">${run.details.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : ""}
           </li>
         `).join("")}</ul>
       `;
@@ -288,26 +286,37 @@
 
     function renderHistory(workflowRuns) {
       const root = document.getElementById("history");
-      root.innerHTML = renderRunList("Booking runs", workflowRuns.booking || []);
+      root.innerHTML = renderRunList("Google booking runs", workflowRuns.runs || []);
     }
 
-    async function loadStatus() {
-      const response = await fetch(`status.json?ts=${Date.now()}`, {
+    async function fetchJson(path, fallback) {
+      const response = await fetch(`${path}?ts=${Date.now()}`, {
         cache: "no-store",
         headers: {
           "Cache-Control": "no-cache",
           "Pragma": "no-cache"
         }
       });
-      if (!response.ok) {
-        throw new Error(`Could not load status.json: ${response.status}`);
+      if (response.status === 404) {
+        return fallback;
       }
-      const status = await response.json();
+      if (!response.ok) {
+        throw new Error(`Could not load ${path}: ${response.status}`);
+      }
+      return response.json();
+    }
+
+    async function loadStatus() {
+      const status = await fetchJson("status.json", null);
+      if (!status) {
+        throw new Error("Could not load status.json");
+      }
+      const history = await fetchJson("status-history.json", { runs: [] });
       document.getElementById("updated").textContent =
         `Last updated: ${formatTimestamp(status.updatedAt, status.timezone)}`;
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.configuredRequests || [], status.requests || []);
-      renderHistory(status.workflowRuns || { booking: [] });
+      renderHistory(history || { runs: [] });
     }
 
     loadStatus().catch(error => {
