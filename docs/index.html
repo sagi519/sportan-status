@@ -60,6 +60,18 @@
       background: #ffebe9;
       color: #82071e;
     }
+    .success, .completed {
+      background: #dafbe1;
+      color: #116329;
+    }
+    .failure, .timed_out, .cancelled {
+      background: #ffebe9;
+      color: #82071e;
+    }
+    .in_progress, .queued, .neutral {
+      background: #ddf4ff;
+      color: #0969da;
+    }
     a.button {
       background: #0969da;
       border-radius: 8px;
@@ -98,18 +110,18 @@
     </div>
 
     <section class="card">
-      <h2>Upcoming bookings</h2>
+      <h2>Already booked slots</h2>
       <div id="upcoming">Loading...</div>
     </section>
 
     <section class="card">
-      <h2>Requested slots</h2>
+      <h2>Future requests</h2>
       <div id="requests">Loading...</div>
     </section>
 
     <section class="card">
-      <h2>Last refresh run</h2>
-      <div id="run" class="muted">Loading...</div>
+      <h2>Automation history</h2>
+      <div id="history">Loading...</div>
     </section>
   </main>
 
@@ -124,17 +136,31 @@
       return value === null || value === undefined || value === "" ? fallback : String(value);
     }
 
+    function escapeHtml(value) {
+      return text(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function badge(value, fallback = "neutral") {
+      const normalized = text(value, fallback).toLowerCase();
+      return `<span class="badge ${escapeHtml(normalized)}">${escapeHtml(value || fallback)}</span>`;
+    }
+
     function renderUpcoming(upcoming) {
       const root = document.getElementById("upcoming");
       if (!upcoming.items || upcoming.items.length === 0) {
-        root.innerHTML = `<p class="muted">${text(upcoming.message, "No upcoming bookings")}</p>`;
+        root.innerHTML = `<p class="muted">${escapeHtml(text(upcoming.message, "No upcoming bookings"))}</p>`;
         return;
       }
       root.innerHTML = `<ul>${upcoming.items.map(item => `
         <li>
-          <strong>${text(item.date)} ${text(item.startTime)}-${text(item.endTime)}</strong>
-          ${text(item.location) ? ` - ${text(item.location)}` : ""}
-          ${text(item.description) ? `<div class="muted">${text(item.description)}</div>` : ""}
+          <strong>${escapeHtml(item.date)} ${escapeHtml(item.startTime)}-${escapeHtml(item.endTime)}</strong>
+          ${text(item.location) ? ` - ${escapeHtml(item.location)}` : ""}
+          ${text(item.description) ? `<div class="muted">${escapeHtml(item.description)}</div>` : ""}
         </li>
       `).join("")}</ul>`;
     }
@@ -142,33 +168,66 @@
     function renderRequests(requests) {
       const root = document.getElementById("requests");
       if (!requests || requests.length === 0) {
-        root.innerHTML = `<p class="muted">No requested slots configured for this status refresh.</p>`;
+        root.innerHTML = `<p class="muted">No future requests configured.</p>`;
         return;
       }
       root.innerHTML = requests.map(request => {
         const status = text(request.status, "unavailable");
         const priority = (request.courts || []).join(", ");
         const available = (request.available || []).join(" | ");
+        const title = text(request.label, `${text(request.startTime)} - courts ${priority}`);
         return `
           <div class="card">
             <div class="row">
-              <strong>${text(request.startTime)} - courts ${priority}</strong>
-              <span class="badge ${status}">${statusText[status] || status}</span>
+              <strong>${escapeHtml(title)}</strong>
+              <span class="badge ${escapeHtml(status)}">${escapeHtml(statusText[status] || status)}</span>
             </div>
-            ${request.selectedCourt ? `<p>Best match: <strong>${text(request.selectedCourt)}</strong> (${text(request.actionText)})</p>` : ""}
-            ${available ? `<p class="muted">Available now: ${available}</p>` : ""}
+            <p class="muted">
+              ${escapeHtml(text(request.kind, "recurring"))}
+              · target ${escapeHtml(request.targetDate)}
+              · ${escapeHtml(request.startTime)}
+              · courts ${escapeHtml(priority)}
+            </p>
+            ${request.selectedCourt ? `<p>Best match: <strong>${escapeHtml(request.selectedCourt)}</strong> (${escapeHtml(request.actionText)})</p>` : ""}
+            ${available ? `<p class="muted">Available now: ${escapeHtml(available)}</p>` : ""}
           </div>
         `;
       }).join("");
     }
 
-    function renderRun(run) {
-      const root = document.getElementById("run");
-      if (run && run.url) {
-        root.innerHTML = `<a href="${run.url}">Open GitHub Actions run</a>`;
-      } else {
-        root.textContent = "Run link unavailable outside GitHub Actions.";
+    function runState(run) {
+      return run.conclusion || run.status || "unknown";
+    }
+
+    function renderRunList(title, runs) {
+      if (!runs || runs.length === 0) {
+        return `<h3>${escapeHtml(title)}</h3><p class="muted">No runs found.</p>`;
       }
+      return `
+        <h3>${escapeHtml(title)}</h3>
+        <ul>${runs.map(run => `
+          <li>
+            <div class="row">
+              <span>
+                <strong>#${escapeHtml(run.number)}</strong>
+                ${run.url ? `<a href="${escapeHtml(run.url)}">${escapeHtml(run.workflowName || "workflow run")}</a>` : escapeHtml(run.workflowName || "workflow run")}
+              </span>
+              ${badge(runState(run))}
+            </div>
+            <div class="muted">
+              ${escapeHtml(run.event)} · created ${escapeHtml(run.createdAt)} · updated ${escapeHtml(run.updatedAt)}
+            </div>
+          </li>
+        `).join("")}</ul>
+      `;
+    }
+
+    function renderHistory(workflowRuns) {
+      const root = document.getElementById("history");
+      root.innerHTML = [
+        renderRunList("Booking runs", workflowRuns.booking || []),
+        renderRunList("Status refresh runs", workflowRuns.statusRefresh || [])
+      ].join("");
     }
 
     async function loadStatus() {
@@ -181,14 +240,14 @@
         `Last updated: ${text(status.updatedAt)} (${text(status.timezone)})`;
       renderUpcoming(status.upcoming || { items: [] });
       renderRequests(status.requests || []);
-      renderRun(status.run || {});
+      renderHistory(status.workflowRuns || { booking: [], statusRefresh: [] });
     }
 
     loadStatus().catch(error => {
       document.getElementById("updated").textContent = error.message;
       document.getElementById("upcoming").textContent = "Status is not available yet.";
       document.getElementById("requests").textContent = "Status is not available yet.";
-      document.getElementById("run").textContent = "Status is not available yet.";
+      document.getElementById("history").textContent = "Status is not available yet.";
     });
 
     setInterval(loadStatus, 60000);
