@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Sportan booking status</title>
   <style>
     :root {
@@ -294,7 +297,13 @@
     }
 
     async function loadStatus() {
-      const response = await fetch(`status.json?ts=${Date.now()}`, { cache: "no-store" });
+      const response = await fetch(`status.json?ts=${Date.now()}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache"
+        }
+      });
       if (!response.ok) {
         throw new Error(`Could not load status.json: ${response.status}`);
       }
