@@ -1,11 +1,19 @@
 {
-  "updatedAt": "2026-05-31T16:40:17+03:00",
+  "updatedAt": "2026-05-31T18:05:05+03:00",
   "timezone": "Asia/Jerusalem",
   "targetDate": "2026-06-01",
   "upcoming": {
-    "total": 0,
-    "message": "לא קיימים שיעורים מוזמנים",
-    "items": []
+    "total": 1,
+    "message": null,
+    "items": [
+      {
+        "date": "2026-05-31",
+        "startTime": "22:00",
+        "endTime": "23:00",
+        "description": "מגרשים 1+2+4",
+        "location": "מגרשים 1+2+4"
+      }
+    ]
   },
   "configuredRequests": [
     {
@@ -39,20 +47,33 @@
         "מגרש 2@classId:435",
         "מגרש 4@classId:435"
       ],
-      "status": "not_open_yet",
-      "actionText": "עדיין לא נפתח",
+      "status": "available",
+      "actionText": "הרשמה",
       "selectedCourt": "מגרש 1",
       "slot": "22:00-23:00"
     }
   ],
   "workflowRuns": {
-    "booking": []
+    "booking": [
+      {
+        "workflowName": "Sportan booking",
+        "databaseId": 26716134596,
+        "conclusion": "success",
+        "headBranch": "main",
+        "updatedAt": "2026-05-31T15:04:55Z",
+        "event": "schedule",
+        "number": 1,
+        "createdAt": "2026-05-31T15:04:40Z",
+        "url": "https://github.com/sagi519/sportan-booker/actions/runs/26716134596",
+        "status": "completed"
+      }
+    ]
   },
   "run": {
     "repository": "sagi519/sportan-booker",
-    "runId": "26714192751",
+    "runId": "26716139752",
     "runAttempt": "1",
     "workflow": "Sportan status",
-    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26714192751"
+    "url": "https://github.com/sagi519/sportan-booker/actions/runs/26716139752"
   }
 }
